@@ -8,16 +8,15 @@ import (
 
 func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-
-		d, err := ioutil.ReadAll(r.Body)
-
-		if err == nil {
-			http.Error(w, "Oops", http.StatusBadRequest)
+		d, _ := ioutil.ReadAll(r.Body)
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write([]byte("Ops"))
 			return
 		}
 
-		fmt.Fprint(w, "hello %s", d)
+		fmt.Fprintf(w, "hello %s", d)
 	})
 
-	http.ListenAndServe(":9090", nil)
+	http.ListenAndServe(":9000", nil)
 }
